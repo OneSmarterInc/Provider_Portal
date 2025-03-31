@@ -13,7 +13,7 @@ const InputField = ({ label, placeholder, icon: Icon }) => {
       </label>
       <div className="flex flex-row bg-white border-2 rounded justify-between h-10 p-2">
         <input
-          className="border-0 w-full"
+          className="border-0 w-full outline-none"
           type="text"
           placeholder={placeholder}
           id={label}
@@ -31,7 +31,7 @@ const Register = () => {
   const navigate = useNavigate();
 
   const handleRegister = () => {
-    navigate("/login");
+    navigate("/");
   };
 
   const divStyle = {

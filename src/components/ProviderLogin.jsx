@@ -29,7 +29,7 @@ const ProviderLogin = () => {
           </label>
           <div className="flex flex-row bg-white border-2 rounded justify-between text-xs h-8 p-2">
             <input
-              className="border-0 w-full"
+              className="border-0 w-full outline-none"
               type="text"
               placeholder="Ex: 1234567890"
             />
@@ -45,7 +45,7 @@ const ProviderLogin = () => {
           </label>
           <div className="flex flex-row bg-white border-2 rounded justify-between text-xs h-8 p-2 gap-20">
             <input
-              className="border-0 w-full"
+              className="border-0 w-full outline-none"
               type="text"
               placeholder="Ex: 1234567890"
             />
@@ -63,7 +63,7 @@ const ProviderLogin = () => {
       </div>
 
       <div>
-        <p className="text-sm text-gray-500">No account yet? Register as a new user.</p>
+        <p className="text-sm text-gray-500">No account yet? <a href="/register">Register as a new user.</a></p>
       </div>
     </div>
   );
