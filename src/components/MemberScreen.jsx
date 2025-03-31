@@ -12,9 +12,6 @@ import {
   Upload,
 } from "lucide-react";
 import backgroundImage from "../assets/image.png";
-import PDFViewer from "./PdfViewer";
-import PDFPreview from "./PdfViewer";
-import PdfPreview from "./PdfViewer";
 
 const totalClaim = [
   {
@@ -258,6 +255,8 @@ const MemberScreen = () => {
       document.body.removeChild(a);
     }
   };
+
+  const pdfUrl = "/EOB_1717.pdf";
 
   return (
     <div
@@ -562,7 +561,7 @@ const MemberScreen = () => {
           <table className="w-[90vw] border-collapse ">
             <thead>
               <tr className="bg-white p-4">
-                <th className="w-[100px] p-2 text-left font-inter text-[13px]">
+                <th className="w-[100px] p-2 text-center font-inter text-[13px]">
                   EOB
                 </th>
                 <th className="w-[100px] p-2 text-left font-inter text-[13px]">
@@ -593,7 +592,7 @@ const MemberScreen = () => {
                 <>
                   <tr className="">
                     <td
-                      className="p-2 text-left text-xs font-inter bg-gray-100 border-b text-[#0486A5] cursor-pointer"
+                      className="p-2 text-center text-xs font-inter bg-gray-100 border-b text-[#0486A5] cursor-pointer"
                       onClick={() => setSelectedPdf(true)}
                     >
                       {row.eob}
@@ -601,25 +600,12 @@ const MemberScreen = () => {
 
                     {/* Modal for PDF */}
                     {selectedPdf && (
-                      <div className="fixed  inset-0 flex items-center justify-center bg-gray-400 bg-opacity-50 backdrop-blur-sm z-50">
+                      <div className="fixed inset-0 flex items-center justify-center bg-gray-400 bg-opacity-50 backdrop-blur-sm z-50">
                         <div className="bg-white max-w-100 p-6 rounded-lg shadow-lg w-[60%]">
                           {/* Header */}
                           <div className="flex flex-row justify-between">
                             <h3 className="mb-4 text-gray-800">EOB Files</h3>
                             <div className="flex justify-end gap-4 items-center border-b">
-                              <label
-                                htmlFor="fileUpload"
-                                className="cursor-pointer flex items-center"
-                              >
-                                <Upload className="w-5 h-5 text-teal-600" />
-                                <input
-                                  id="fileUpload"
-                                  type="file"
-                                  className="hidden"
-                                  onChange={handleFileUpload}
-                                />
-                              </label>
-
                               <button
                                 onClick={() => setSelectedPdf(false)} // Close modal
                                 className="text-teal-600 hover:text-teal-800"
@@ -629,19 +615,15 @@ const MemberScreen = () => {
                             </div>
                           </div>
 
-                          {/* Display Uploaded File */}
-                          {file && (
-                            <div className="mt-2 p-2">
-                              <p className="text-sm font-semibold">
-                                <iframe
-                                  src={fileURL}
-                                  width="100%"
-                                  height="500px"
-                                  title="PDF Preview"
-                                />
-                              </p>
-                            </div>
-                          )}
+                          {/* Display PDF File */}
+                          <div className="mt-2 p-2">
+                            <iframe
+                              src={pdfUrl}
+                              width="100%"
+                              height="500px"
+                              title="PDF Preview"
+                            />
+                          </div>
                         </div>
                       </div>
                     )}
@@ -674,11 +656,11 @@ const MemberScreen = () => {
                       <td colSpan={7}>
                         <div className="flex flex-row bg-white border-b border-sky-300">
                           <div className=" p-2 overflow-hidden">
-                            <p className=" pt-2 font-inter text-[12px] text-gray-900 font-normal">
+                            <p className=" pt-2 pl-4 font-inter text-[12px] text-gray-900 font-normal">
                               Claim Number: {row.claim_no} <br />
                               Member Id: {row.member_id}
                             </p>
-                            <p className="pt-2 font-inter text-[12px] text-[#0486A5] font-normal">
+                            <p className="pt-2 pl-4 font-inter text-[12px] text-[#0486A5] font-normal">
                               <button onClick={() => setIsOpen(true)}>
                                 {row.diagnosis_code}
                               </button>
@@ -785,7 +767,7 @@ const MemberScreen = () => {
                                 </div>
                               )}
                             </p>
-                            <p className="pt-2 font-inter text-[12px] text-gray-900 font-normal">
+                            <p className="pt-2 pl-4 font-inter text-[12px] text-gray-900 font-normal">
                               <span className="font-medium font-inter">
                                 {" "}
                                 Claimed Amount:
@@ -794,7 +776,7 @@ const MemberScreen = () => {
                               Plan: {row.plan} | Type: {row.type} | Class:{" "}
                               {row.class}
                             </p>
-                            <p className="max-w-60 pt-2 font-inter text-[12px] text-gray-900 font-normal">
+                            <p className="max-w-60 pt-2 pl-4 font-inter text-[12px] text-gray-900 font-normal">
                               <span className="font-medium"> Provider:</span>{" "}
                               {row.provider} <br />
                               {row.address} {row.state} {row.pin}
