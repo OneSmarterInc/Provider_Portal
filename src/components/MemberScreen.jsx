@@ -15,6 +15,7 @@ import backgroundImage from "../assets/image.png";
 
 const totalClaim = [
   {
+    id: "1",
     eob: "EOB",
     claim_no: "0001235",
     date: "09/11/2023",
@@ -27,6 +28,7 @@ const totalClaim = [
     status: "OPEN",
   },
   {
+    id: "2",
     eob: "EOB",
     claim_no: "0001235",
     date: "09/11/2023",
@@ -39,6 +41,7 @@ const totalClaim = [
     status: "OPEN",
   },
   {
+    id: "3",
     eob: "EOB",
     claim_no: "0001235",
     date: "09/11/2023",
@@ -90,6 +93,7 @@ const totalClaim = [
 
 const data = [
   {
+    uid: "1",
     eob: "EOB",
     id: "0001235",
     date: "09/11/2023",
@@ -125,6 +129,7 @@ const data = [
       "There is no one who loves pain itself, who seeks after it and wants to have it, simply because it is pain",
   },
   {
+    uid:"2",
     eob: "EOB",
     id: "0001235",
     date: "09/11/2023",
@@ -160,6 +165,7 @@ const data = [
       "There is no one who loves pain itself, who seeks after it and wants to have it, simply because it is pain",
   },
   {
+    uid: "3",
     eob: "EOB",
     id: "0001235",
     date: "09/11/2023",
@@ -197,13 +203,9 @@ const data = [
 ];
 
 const MemberScreen = () => {
+  const [expandedRows, setExpandedRows] = useState({});
   const [expandedRow, setExpandedRow] = useState(null);
   const [searchQuery, setSearchQuery] = useState("");
-
-  const toggleRow = (index) => {
-    console.log("Toggling row:", index); // Debugging
-    setExpandedRow(expandedRow === index ? null : index);
-  };
 
   const [isOpen, setIsOpen] = useState(false);
   const [isOpenDetails, setIsOpenDetails] = useState(false);
@@ -213,15 +215,6 @@ const MemberScreen = () => {
   const [isOpenList, setIsOpenList] = useState(false);
   const [showW9Form, setShowW9Form] = useState(false);
   const [status, setStatus] = useState("not_submitted"); // Tracking status
-  const [filew9, setFilew9] = useState(null);
-
-  const handleFileUploade9 = (event) => {
-    const uploadedFile = event.target.files[0];
-    if (uploadedFile) {
-      setFile(uploadedFile);
-      setStatus("in_progress");
-    }
-  };
 
   const handleSubmite9 = () => {
     if (file) {
@@ -258,14 +251,21 @@ const MemberScreen = () => {
 
   const pdfUrl = "/EOB_1717.pdf";
 
+  const toggleRow = (index) => {
+    setExpandedRows(prev => ({
+      ...prev,
+      [index]: !prev[index] // Toggle the state for this specific row
+    }));
+    console.log(expandedRows);
+  };
+
+
   return (
     <div
       style={{
         backgroundImage: `url(${backgroundImage})`,
-        backgroundSize: "cover",
-        backgroundPosition: "center",
       }}
-      className="min-h-screen flex flex-col  items-center pt-8 gap-4"
+      className="min-h-screen flex flex-col bg-cover items-center pt-8 gap-4"
     >
       <div className="w-full bg-transparent">
         <div className="flex items-center justify-between pl-4 pr-4 pb-0 gap-4">
@@ -544,7 +544,7 @@ const MemberScreen = () => {
               aria-hidden="true"
             />
           </div>
-          <div className="mr-4 relative z-10 flex items-center w-[150px] md:w-[250px] lg:w-[300px] h-8 border border-gray-400 rounded-full px-4 bg-white">
+          <div className="mr-4 relative flex items-center w-[150px] md:w-[250px] lg:w-[300px] h-8 border border-gray-400 rounded-full px-4 bg-white">
             <input
               type="text"
               placeholder="Search Claim"
@@ -558,373 +558,232 @@ const MemberScreen = () => {
 
         {/* Table */}
         <div className=" overflow-hidden">
-          <table className="w-[90vw] border-collapse ">
-            <thead>
-              <tr className="bg-white p-4">
-                <th className="w-[100px] p-2 text-center font-inter text-[13px]">
-                  EOB
-                </th>
-                <th className="w-[100px] p-2 text-left font-inter text-[13px]">
-                  Claim No.
-                </th>
-                <th className="w-[90px] p-2 text-left font-inter text-[13px]">
-                  Date
-                </th>
-                <th className="w-[60px] p-2 text-left font-inter text-[13px]">
-                  Type
-                </th>
-                <th className="p-2 text-left font-inter text-[13px] w-[800px]">
-                  Provider
-                </th>
-                <th className="w-[80px] p-2 text-left  font-inter text-[13px]">
-                  Amount
-                </th>
-                <th className="w-[120px] p-2 text-left  font-inter text-[13px]">
-                  Status
-                </th>
-                <th className="w-[50px] p-2 text-left  font-inter text-[13px]">
-                  {" "}
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              {data.map((row, index) => (
-                <>
-                  <tr className="">
-                    <td
-                      className="p-2 text-center text-xs font-inter bg-gray-100 border-b text-[#0486A5] cursor-pointer"
-                      onClick={() => setSelectedPdf(true)}
+        <table className="w-[90vw] border-collapse">
+  <thead>
+    <tr className="bg-white p-4">
+      <th className="w-[100px] p-2 text-center font-inter text-[13px]">EOB</th>
+      <th className="w-[100px] p-2 text-left font-inter text-[13px]">Claim No.</th>
+      <th className="w-[90px] p-2 text-left font-inter text-[13px]">Date</th>
+      <th className="w-[60px] p-2 text-left font-inter text-[13px]">Type</th>
+      <th className="p-2 text-left font-inter text-[13px] w-[800px]">Provider</th>
+      <th className="w-[80px] p-2 text-left font-inter text-[13px]">Amount</th>
+      <th className="w-[120px] p-2 text-left font-inter text-[13px]">Status</th>
+      <th className="w-[50px] p-2 text-left font-inter text-[13px]"></th>
+    </tr>
+  </thead>
+  <tbody>
+    {data.map((row, index) => (
+      <React.Fragment key={index}>
+        <tr>
+          <td
+            className="p-2 text-center text-xs font-inter bg-gray-100 border-b text-[#0486A5] cursor-pointer"
+            onClick={() => setSelectedPdf(true)}
+          >
+            {row.eob}
+          </td>
+
+          {/* Modal for PDF */}
+          {selectedPdf && (
+            <div className="fixed inset-0 flex items-center justify-center bg-gray-400 bg-opacity-50 backdrop-blur-sm z-50">
+              <div className="bg-white max-w-100 p-6 rounded-lg shadow-lg w-[60%]">
+                <div className="flex flex-row justify-between">
+                  <h3 className="mb-4 text-gray-800">EOB Files</h3>
+                  <div className="flex justify-end gap-4 items-center border-b">
+                    <button
+                      onClick={() => setSelectedPdf(false)}
+                      className="text-teal-600 hover:text-teal-800"
                     >
-                      {row.eob}
-                    </td>
+                      <XCircle className="w-6 h-6" />
+                    </button>
+                  </div>
+                </div>
+                <div className="mt-2 p-2">
+                  <iframe
+                    src={pdfUrl}
+                    width="100%"
+                    height="500px"
+                    title="PDF Preview"
+                  />
+                </div>
+              </div>
+            </div>
+          )}
+          <td className="p-2 text-left text-xs font-inter bg-gray-100 border-b">
+            {row.id}
+          </td>
+          <td className="p-2 text-left text-xs font-inter bg-gray-100 border-b">
+            {row.date}
+          </td>
+          <td className="p-2 text-left text-xs font-inter bg-gray-100 border-b">
+            {row.type}
+          </td>
+          <td className="p-2 text-left text-xs font-inter bg-gray-100 border-b">
+            {row.provider}
+          </td>
+          <td className="p-2 text-left text-xs font-inter bg-gray-100 border-b">
+            {row.amount}
+          </td>
+          <td className="text-green-500 p-2 text-left text-xs font-inter bg-gray-100 border-b">
+            {row.status}
+          </td>
+          <td className="bg-gray-100 border-b">
+            <button onClick={() => toggleRow(index)}>
+              <ChevronDown className={`w-4 h-4 text-black transition-transform ${expandedRows[index] ? 'rotate-180' : ''}`} />
+            </button>
+          </td>
+        </tr>
+        {expandedRows[index] && (
+          <tr>
+            <td colSpan={8}>
+              <div className="flex flex-row bg-white border-b border-sky-300">
+                <div className="p-2 overflow-hidden">
+                  <p className="pt-2 pl-4 font-inter text-[12px] text-gray-900 font-normal">
+                    Claim Number: {row.claim_no} <br />
+                    Member Id: {row.member_id}
+                  </p>
+                  <p className="pt-2 pl-4 font-inter text-[12px] text-[#0486A5] font-normal">
+                    <button onClick={() => setIsOpen(true)}>
+                      {row.diagnosis_code}
+                    </button>
 
-                    {/* Modal for PDF */}
-                    {selectedPdf && (
-                      <div className="fixed inset-0 flex items-center justify-center bg-gray-400 bg-opacity-50 backdrop-blur-sm z-50">
-                        <div className="bg-white max-w-100 p-6 rounded-lg shadow-lg w-[60%]">
-                          {/* Header */}
-                          <div className="flex flex-row justify-between">
-                            <h3 className="mb-4 text-gray-800">EOB Files</h3>
-                            <div className="flex justify-end gap-4 items-center border-b">
-                              <button
-                                onClick={() => setSelectedPdf(false)} // Close modal
-                                className="text-teal-600 hover:text-teal-800"
-                              >
-                                <XCircle className="w-6 h-6" />
-                              </button>
-                            </div>
+                    {/* Modal */}
+                    {isOpen && (
+                      <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 backdrop-blur-sm">
+                        <div className="bg-white p-6 rounded-lg shadow-lg w-[70%] ">
+                          <div className="flex justify-between items-center border-b pb-3">
+                            <h3 className="text-teal-600 text-lg font-inter">
+                              Total Claims
+                            </h3>
+                            <button
+                              onClick={() => setIsOpen(false)}
+                              className="text-teal-600 hover:text-teal-800"
+                            >
+                              <XCircle className="w-6 h-6" />
+                            </button>
                           </div>
+                           <div className="overflow-auto">
 
-                          {/* Display PDF File */}
-                          <div className="mt-2 p-2">
-                            <iframe
-                              src={pdfUrl}
-                              width="100%"
-                              height="500px"
-                              title="PDF Preview"
-                            />
-                          </div>
+                          <table className="w-full border-collapse border border-gray-300 mt-4 ">
+                            <thead>
+                              <tr className="bg-gray-200 text-black">
+                                <th className="p-2 border font-inter text-[12px]">EOB</th>
+                                <th className="p-2 border font-inter text-[12px]">Claim No.</th>
+                                <th className="p-2 border font-inter text-[12px]">Date</th>
+                                <th className="p-2 border font-inter text-[12px]">For</th>
+                                <th className="p-2 border font-inter text-[12px]">Type</th>
+                                <th className="p-2 border font-inter text-[12px]">Provider</th>
+                                <th className="p-2 border font-inter text-[12px]">Total</th>
+                                <th className="p-2 border font-inter text-[12px]">Total Paid</th>
+                                <th className="p-2 border font-inter text-[12px]">Member Resp</th>
+                                <th className="p-2 border font-inter text-[12px]">Status</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              {totalClaim.map((row, index) => (
+                                <tr key={index} className="text-center border">
+                                  <td className="p-2 border text-xs text-black">{row.eob}</td>
+                                  <td className="p-2 border text-xs text-black">{row.claim_no}</td>
+                                  <td className="p-2 border text-xs text-black">{row.date}</td>
+                                  <td className="p-2 border text-xs text-black">{row.for}</td>
+                                  <td className="p-2 border text-xs text-black">{row.type}</td>
+                                  <td className="p-2 border text-xs text-black">{row.provider}</td>
+                                  <td className="p-2 border text-xs text-black">{row.total}</td>
+                                  <td className="p-2 border text-xs text-black">{row.total_paid}</td>
+                                  <td className="p-2 border text-xs text-black">{row.member_resp}</td>
+                                  <td className="p-2 border text-xs text-[#00CA07]">{row.status}</td>
+                                </tr>
+                              ))}
+                            </tbody>
+                          </table>
+                           </div>
                         </div>
                       </div>
                     )}
-                    <td className="p-2 text-left text-xs font-inter bg-gray-100 border-b">
-                      {row.id}
-                    </td>
-                    <td className="p-2 text-left text-xs font-inter bg-gray-100 border-b">
-                      {row.date}
-                    </td>
-                    <td className="p-2 text-left text-xs font-inter bg-gray-100 border-b">
-                      {row.type}
-                    </td>
-                    <td className="p-2 text-left text-xs font-inter bg-gray-100 border-b">
-                      {row.provider}
-                    </td>
-                    <td className="p-2 text-left text-xs font-inter bg-gray-100 border-b">
-                      {row.amount}
-                    </td>
-                    <td className="text-green-500 p-2 text-left text-xs font-inter bg-gray-100 border-b">
-                      {row.status}
-                    </td>
-                    <td className="bg-gray-100 border-b">
-                      <button onClick={() => setIsOpenDetails((prev) => !prev)}>
-                        <ChevronDown className="w-4 h-4 text-black" />
-                      </button>
-                    </td>
-                  </tr>
-                  {isOpenDetails && (
-                    <tr>
-                      <td colSpan={7}>
-                        <div className="flex flex-row bg-white border-b border-sky-300">
-                          <div className=" p-2 overflow-hidden">
-                            <p className=" pt-2 pl-4 font-inter text-[12px] text-gray-900 font-normal">
-                              Claim Number: {row.claim_no} <br />
-                              Member Id: {row.member_id}
-                            </p>
-                            <p className="pt-2 pl-4 font-inter text-[12px] text-[#0486A5] font-normal">
-                              <button onClick={() => setIsOpen(true)}>
-                                {row.diagnosis_code}
-                              </button>
-
-                              {/* Modal */}
-                              {isOpen && (
-                                <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 backdrop-blur-sm">
-                                  <div className="bg-white p-6 rounded-lg shadow-lg w-[70%]">
-                                    {/* Header */}
-                                    <div className="flex justify-between items-center border-b pb-3">
-                                      <h3 className="text-teal-600 text-lg font-inter">
-                                        Total Claims
-                                      </h3>
-                                      <button
-                                        onClick={() => setIsOpen(false)}
-                                        className="text-teal-600 hover:text-teal-800"
-                                      >
-                                        <XCircle className="w-6 h-6" />
-                                      </button>
-                                    </div>
-
-                                    {/* Table */}
-                                    <table className="w-full border-collapse border border-gray-300 mt-4">
-                                      <thead>
-                                        <tr className="bg-gray-200 text-black">
-                                          <th className="p-2 border font-inter text-[12px]">
-                                            EOB
-                                          </th>
-                                          <th className="p-2 border font-inter text-[12px]">
-                                            Claim No.
-                                          </th>
-                                          <th className="p-2 border font-inter text-[12px]">
-                                            Date
-                                          </th>
-                                          <th className="p-2 border font-inter text-[12px]">
-                                            For
-                                          </th>
-                                          <th className="p-2 border font-inter text-[12px]">
-                                            Type
-                                          </th>
-                                          <th className="p-2 border font-inter text-[12px]">
-                                            Provider
-                                          </th>
-                                          <th className="p-2 border font-inter text-[12px]">
-                                            Total
-                                          </th>
-                                          <th className="p-2 border font-inter text-[12px]">
-                                            Total Paid
-                                          </th>
-                                          <th className="p-2 border font-inter text-[12px]">
-                                            Member Resp
-                                          </th>
-                                          <th className="p-2 border font-inter text-[12px]">
-                                            Status
-                                          </th>
-                                          {/* <th></th> */}
-                                        </tr>
-                                      </thead>
-
-                                      <tbody>
-                                        {totalClaim.map((row, index) => (
-                                          <tr
-                                            key={index}
-                                            className="text-center border"
-                                          >
-                                            <td className="p-2 border text-xs text-black">
-                                              {row.eob}
-                                            </td>
-                                            <td className="p-2 border text-xs text-black">
-                                              {row.claim_no}
-                                            </td>
-                                            <td className="p-2 border text-xs text-black">
-                                              {row.date}
-                                            </td>
-                                            <td className="p-2 border text-xs text-black">
-                                              {row.for}
-                                            </td>
-                                            <td className="p-2 border text-xs text-black">
-                                              {row.type}
-                                            </td>
-                                            <td className="p-2 border text-xs text-black">
-                                              {row.provider}
-                                            </td>
-                                            <td className="p-2 border text-xs text-black">
-                                              {row.total}
-                                            </td>
-                                            <td className="p-2 border text-xs text-black">
-                                              {row.total_paid}
-                                            </td>
-                                            <td className="p-2 border text-xs text-black">
-                                              {row.member_resp}
-                                            </td>
-                                            <td className="p-2 border text-xs text-[#00CA07]">
-                                              {row.status}
-                                            </td>
-                                            {/* <td className="border w-8">
-                                    <ChevronDown className="w-4 h-4 text-black" />
-                                  </td> */}
-                                          </tr>
-                                        ))}
-                                      </tbody>
-                                    </table>
-                                  </div>
-                                </div>
-                              )}
-                            </p>
-                            <p className="pt-2 pl-4 font-inter text-[12px] text-gray-900 font-normal">
-                              <span className="font-medium font-inter">
-                                {" "}
-                                Claimed Amount:
-                              </span>{" "}
-                              {row.claimed_amount} <br />
-                              Plan: {row.plan} | Type: {row.type} | Class:{" "}
-                              {row.class}
-                            </p>
-                            <p className="max-w-60 pt-2 pl-4 font-inter text-[12px] text-gray-900 font-normal">
-                              <span className="font-medium"> Provider:</span>{" "}
-                              {row.provider} <br />
-                              {row.address} {row.state} {row.pin}
-                            </p>
+                  </p>
+                  <p className="pt-2 pl-4 font-inter text-[12px] text-gray-900 font-normal">
+                    <span className="font-medium font-inter">Claimed Amount:</span> {row.claimed_amount} <br />
+                    Plan: {row.plan} | Type: {row.type} | Class: {row.class}
+                  </p>
+                  <p className="max-w-60 pt-2 pl-4 font-inter text-[12px] text-gray-900 font-normal">
+                    <span className="font-medium"> Provider:</span> {row.provider} <br />
+                    {row.address} {row.state} {row.pin}
+                  </p>
+                </div>
+                <div className="ml-auto mt-auto b-2 r-2 p-4 mb-0">
+                  <button
+                    onClick={() => setShowModal(true)}
+                    className="flex items-center gap-2 border border-gray-400 text-gray-700 px-2 py-1 rounded-full hover:bg-gray-100 transition"
+                  >
+                    <Info className="w-5 h-5 text-gray-700" />
+                    <span className="text-sm font-medium">View Detail</span>
+                  </button>
+                  {/* Modal Popup */}
+                  {showModal && (
+                    <div className="fixed inset-0 bg-black bg-opacity-30 backdrop-blur-sm flex justify-center items-center z-50">
+                      <div className="bg-white shadow-lg rounded-lg p-6 w-[700px] relative border border-gray-200">
+                        <div className="flex justify-between items-start border-b pb-3">
+                          <h3 className="text-sky-500 font-inter font-semibold">
+                            CLAIM NUMBER: {row.claim_no}
+                            <br />
+                            <span className="text-xs text-gray-600">{row.diagnosis_code}</span>
+                          </h3>
+                          <button
+                            onClick={() => setShowModal(false)}
+                            className="text-teal-600 hover:text-teal-800 transition font-inter"
+                          >
+                            <XCircle className="w-6 h-6" />
+                          </button>
+                        </div>
+                        <p className="text-sm text-gray-700 mt-2 font-inter">
+                          <strong>Receipt Date:</strong> {row.receipt_date} | <strong>Patient Id:</strong> {row.patient_id}
+                        </p>
+                        <div className="flex flex-row gap-6 mt-4 font-inter">
+                          <div className="w-1/3 border-r pr-4 text-sm font-inter text-gray-700">
+                            <p><strong>Member Name:</strong> {row.member_name}</p>
+                            <p><strong>SSN:</strong> {row.ssn}</p>
+                            <p><strong>Member Id:</strong> {row.member_id}</p>
+                            <p><strong>DOB:</strong> {row.dob}</p>
+                            <p className="mt-2"><strong>Claimed Amount:</strong> {row.claimed_amount}</p>
+                            <p><strong>Plan:</strong> {row.plan} | <strong>Type:</strong> {row.type} | <strong>Class:</strong> {row.class}</p>
+                            <p className="mt-2"><strong>Provider:</strong> {row.provider}</p>
+                            <p>{row.address}</p>
+                            <p>{row.state} {row.pin}</p>
                           </div>
-                          <div className="ml-auto mt-auto b-2 r-2 p-4 mb-0">
-                            <button
-                              onClick={() => setShowModal(true)}
-                              className="flex items-center gap-2 border border-gray-400 text-gray-700 px-2 py-1 rounded-full hover:bg-gray-100 transition"
-                            >
-                              <Info className="w-5 h-5 text-gray-700" />
-                              <span className="text-sm font-medium">
-                                View Detail
-                              </span>
-                            </button>
-                            {/* Modal Popup */}
-                            {showModal && (
-                              <div className="fixed inset-0 bg-black bg-opacity-30 backdrop-blur-sm flex justify-center items-center z-50">
-                                <div className="bg-white shadow-lg rounded-lg p-6 w-[700px] relative border border-gray-200">
-                                  {/* Header */}
-                                  <div className="flex justify-between items-start border-b pb-3">
-                                    <h3 className="text-sky-500 font-inter font-semibold">
-                                      CLAIM NUMBER: {row.claim_no}
-                                      <br />
-                                      <span className="text-xs text-gray-600 ">
-                                        {row.diagnosis_code}
-                                      </span>
-                                    </h3>
-                                    <button
-                                      onClick={() => setShowModal(false)}
-                                      className="text-teal-600 hover:text-teal-800 transition font-inter"
-                                    >
-                                      <XCircle className="w-6 h-6" />
-                                    </button>
-                                  </div>
-
-                                  {/* Claim Details */}
-                                  <p className="text-sm text-gray-700 mt-2 font-inter">
-                                    <strong>Receipt Date:</strong>{" "}
-                                    {row.receipt_date} |{" "}
-                                    <strong>Patient Id:</strong>{" "}
-                                    {row.patient_id}
-                                  </p>
-
-                                  <div className="flex flex-row gap-6 mt-4 font-inter">
-                                    {/* Left Section */}
-                                    <div className="w-1/3 border-r pr-4 text-sm font-inter text-gray-700">
-                                      <p>
-                                        <strong>Member Name:</strong>{" "}
-                                        {row.member_name}
-                                      </p>
-                                      <p>
-                                        <strong>SSN:</strong> {row.ssn}
-                                      </p>
-                                      <p>
-                                        <strong>Member Id:</strong>{" "}
-                                        {row.member_id}
-                                      </p>
-                                      <p>
-                                        <strong>DOB:</strong> {row.dob}
-                                      </p>
-
-                                      <p className="mt-2">
-                                        <strong>Claimed Amount:</strong>{" "}
-                                        {row.claimed_amount}
-                                      </p>
-                                      <p>
-                                        <strong>Plan:</strong> {row.plan} |{" "}
-                                        <strong>Type:</strong> {row.type} |{" "}
-                                        <strong>Class:</strong> {row.class}
-                                      </p>
-
-                                      <p className="mt-2">
-                                        <strong>Provider:</strong>{" "}
-                                        {row.provider}
-                                      </p>
-                                      <p>{row.address}</p>
-
-                                      <p>
-                                        {" "}
-                                        {row.state} {row.pin}
-                                      </p>
-                                    </div>
-
-                                    {/* Middle Section */}
-                                    <div className="w-1/3 border-r pr-4 text-sm font-inter text-gray-700">
-                                      <p>
-                                        <strong>Primary Carrier:</strong>{" "}
-                                        {row.primary_carrier}
-                                      </p>
-                                      <p>
-                                        <strong>Accident:</strong>{" "}
-                                        {row.accident}
-                                      </p>
-                                      <p>
-                                        <strong>Status:</strong> {row.status}
-                                      </p>
-                                      <p>
-                                        <strong>Assign:</strong> {row.assign}
-                                      </p>
-                                      <p>
-                                        <strong>Prov Check#:</strong>{" "}
-                                        {row.prov_check}
-                                      </p>
-                                      <p>
-                                        <strong>Mem Check#:</strong>{" "}
-                                        {row.mem_check}
-                                      </p>
-                                      <p>
-                                        <strong>Subject:</strong> {row.subject}
-                                      </p>
-                                      <p>
-                                        <strong>Allowable:</strong>{" "}
-                                        {row.allowable}
-                                      </p>
-                                    </div>
-
-                                    {/* Right Section - Notes */}
-                                    <div className="w-1/3 text-sm text-gray-700">
-                                      <div className="flex items-center gap-2">
-                                        <FileText className="w-5 h-5 text-gray-600" />
-                                        <h3 className="text-[#0486A5] font-semibold">
-                                          Notes / Comments
-                                        </h3>
-                                      </div>
-                                      <p className="mt-2 text-gray-600">
-                                        {row.notes}
-                                      </p>
-
-                                      <textarea
-                                        className="w-full p-2 mt-3 border border-gray-300 rounded-md text-xs focus:outline-none focus:ring-2 focus:ring-teal-500"
-                                        rows="3"
-                                        placeholder="Add Note (Max 100 characters)"
-                                      ></textarea>
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-                            )}
+                          <div className="w-1/3 border-r pr-4 text-sm font-inter text-gray-700">
+                            <p><strong>Primary Carrier:</strong> {row.primary_carrier}</p>
+                            <p><strong>Accident:</strong> {row.accident}</p>
+                            <p><strong>Status:</strong> {row.status}</p>
+                            <p><strong>Assign:</strong> {row.assign}</p>
+                            <p><strong>Prov Check#:</strong> {row.prov_check}</p>
+                            <p><strong>Mem Check#:</strong> {row.mem_check}</p>
+                            <p><strong>Subject:</strong> {row.subject}</p>
+                            <p><strong>Allowable:</strong> {row.allowable}</p>
+                          </div>
+                          <div className="w-1/3 text-sm text-gray-700">
+                            <div className="flex items-center gap-2">
+                              <FileText className="w-5 h-5 text-gray-600" />
+                              <h3 className="text-[#0486A5] font-semibold">Notes / Comments</h3>
+                            </div>
+                            <p className="mt-2 text-gray-600">{row.notes}</p>
+                            <textarea
+                              className="w-full p-2 mt-3 border border-gray-300 rounded-md text-xs focus:outline-none focus:ring-2 focus:ring-teal-500"
+                              rows="3"
+                              placeholder="Add Note (Max 100 characters)"
+                            ></textarea>
                           </div>
                         </div>
-                      </td>
-                    </tr>
+                      </div>
+                    </div>
                   )}
-                </>
-              ))}
-            </tbody>
-          </table>
+                </div>
+              </div>
+            </td>
+          </tr>
+        )}
+      </React.Fragment>
+    ))}
+  </tbody>
+</table>
         </div>
       </div>
     </div>
